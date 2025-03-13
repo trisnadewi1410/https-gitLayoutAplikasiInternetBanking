@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Mobile Banking',
-      home: LoginPage(),
+      home: const LoginPage(),
     );
   }
 }
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -23,17 +26,19 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final String nim = '2315091039'; // Ganti dengan NIM Anda
+  final String correctUsername = '2315091039';
+  final String correctPassword = '2315091039';
 
   void _login() {
-    if (_usernameController.text == nim && _passwordController.text == nim) {
+    if (_usernameController.text == correctUsername &&
+        _passwordController.text == correctPassword) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => const HomePage()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Username atau password salah')),
+        const SnackBar(content: Text('Username atau password salah')),
       );
     }
   }
@@ -41,27 +46,66 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Login')),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _usernameController,
-              decoration: InputDecoration(labelText: 'Username (NIM)'),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password (NIM)'),
-              obscureText: true,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _login,
-              child: Text('Login'),
-            ),
-          ],
+      backgroundColor: Colors.white,
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/logo.png', width: 150), // Tambahkan logo Undiksha
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.all(20),
+                margin: const EdgeInsets.symmetric(horizontal: 30),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.grey),
+                ),
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: _usernameController,
+                      decoration: const InputDecoration(
+                        labelText: 'Username',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                      controller: _passwordController,
+                      decoration: const InputDecoration(
+                        labelText: 'Password',
+                        border: OutlineInputBorder(),
+                      ),
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: _login,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        minimumSize: const Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      child: const Text('Login', style: TextStyle(color: Colors.white)),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text('Daftar Mbanking', style: TextStyle(color: Colors.blue)),
+                        Text('Lupa Password?', style: TextStyle(color: Colors.blue)),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text('copyright @2022 by Undiksha', style: TextStyle(color: Colors.grey)),
+            ],
+          ),
         ),
       ),
     );
@@ -69,90 +113,15 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: Text('Koperasi Undiksha'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.exit_to_app),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
+      appBar: AppBar(title: const Text('Menu Utama')),
+      body: const Center(
+        child: Text('Selamat Datang di Koperasi Undiksha!'),
       ),
-      body: Column(
-        children: [
-          Container(
-            color: Colors.blue,
-            padding: EdgeInsets.all(16),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 30,
-                  backgroundImage: AssetImage('assets/user.png'),
-                ),
-                SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Nasabah', style: TextStyle(color: Colors.white, fontSize: 16)),
-                    Text('Ni Komang Ayu Trisna Dewi', style: TextStyle(color: Colors.white, fontSize: 14)),
-                    Text('Total Saldo Anda', style: TextStyle(color: Colors.white, fontSize: 12)),
-                    Text('Rp. 1.200.000.000', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: GridView.count(
-              padding: EdgeInsets.all(16),
-              crossAxisCount: 3,
-              children: [
-                menuItem(Icons.account_balance_wallet, 'Cek Saldo'),
-                menuItem(Icons.send, 'Transfer'),
-                menuItem(Icons.savings, 'Deposito'),
-                menuItem(Icons.payment, 'Pembayaran'),
-                menuItem(Icons.request_page, 'Pinjaman'),
-                menuItem(Icons.receipt, 'Mutasi'),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(16),
-            color: Colors.grey[200],
-            child: Column(
-              children: [
-                Text('Butuh Bantuan?', style: TextStyle(fontSize: 16)),
-                Text('0878-1234-1024', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                Icon(Icons.phone, color: Colors.blue, size: 30),
-              ],
-            ),
-          ),
-          BottomNavigationBar(
-            items: [
-              BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
-              BottomNavigationBarItem(icon: Icon(Icons.qr_code), label: ''),
-              BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget menuItem(IconData icon, String label) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, size: 40, color: Colors.blue),
-        SizedBox(height: 5),
-        Text(label, textAlign: TextAlign.center),
-      ],
     );
   }
 }
